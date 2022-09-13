@@ -1,38 +1,454 @@
-.App {
-  text-align: center;
+
+body {
+    background-color: #141414;
+    overflow-x: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.mobile_wallpaper {
+    display: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.navbar {
+    z-index: 10;
+    position: fixed;
+    width: 100%;
+    height: 3.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: 0.3s ease-in-out;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.navbar-logo {
+    width: 100px;
+    transition: 0.1s ease-in-out;
 }
 
-.App-link {
-  color: #61dafb;
+.video-player {
+    mask-image: linear-gradient(
+            var(--mask-direction, to bottom),
+            hsl(0 0% 0% / 1),
+            hsl(0 0% 0% / 1) 20%,
+            hsl(0 0% 0% / 1) 40%,
+            hsl(0 0% 0% / 0)
+    );
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.videoActions {
+    position: absolute;
+    top: 27%;
+    left: 3.5%;
+}
+
+.videoActions h1 {
+    display: flex;
+    flex-wrap: wrap;
+    font-family: 'Square Peg', cursive;
+    font-size: 7rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: rgba(20, 0, 0, 1);
+    text-transform: capitalize;
+    font-style: italic;
+    text-decoration: none;
+    line-height: 0.8em;
+    letter-spacing: 0;
+    color: white;
+    transition: 1s ease;
+}
+
+.videoActions p {
+    text-overflow: ellipsis;
+    display: flex;
+    flex-wrap: wrap;
+    width: 25rem;
+    height: 4.3rem;
+    overflow-y: scroll;
+    font-size: 1rem;
+    color: white;
+}
+
+.volume {
+    position: absolute;
+    top: 65%;
+    right: 5%;
+    font-size: 1rem;
+    border: 1px solid white;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+    padding: 0.6rem 0.7rem;
+}
+
+.volume:hover {
+    background-color: grey;
+    border-color: white;
+}
+
+::-webkit-scrollbar {
+    width: 0; /* Remove scrollbar space */
+    background: transparent; /* Optional: just make scrollbar invisible */
+}
+
+.title {
+    color: white;
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.gap {
+    gap: 0.4rem;
+}
+
+.play-home-button {
+    margin-top: 2.5rem;
+    border: none;
+    padding: 0.4rem 1.8rem;
+    font-weight: 500;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    border-radius: 3px;
+    width: 150px;
+}
+
+.homepage-image {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    transition: 1s ease-in-out;
+}
+
+.collection {
+    margin-top: -5.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: 3.7rem;
+}
+
+.box {
+    transition: 0.2s ease-out;
+    cursor: pointer;
+    background-color: #202124;
+}
+
+.box:hover {
+    transform: scale(1.7, 1.5);
+    margin-top: -5rem;
+    box-shadow: 0 20px 15px black;
+}
+
+.box:hover .showcase-video-details {
+    display: unset !important;
+}
+
+.showcase-picture {
+    width: 15.5rem;
+    height: 8rem;
+}
+
+.showcase-picture img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+    filter: contrast(1.1) brightness(1.2);
+}
+
+.play {
+    background-color: mintcream;
+    padding: 0.2rem 0.3rem;
+    border: 1px solid mintcream;
+    border-radius: 50%;
+}
+
+.plus {
+    background-color: transparent;
+    border: 1px solid mintcream;
+    padding: 0.2rem 0.3rem;
+    border-radius: 50%;
+}
+
+.showcase-video-details {
+    display: none !important;
+    background-color: #202124;
+    transition: 0.1s ease-out;
+    cursor: pointer;
+    position: absolute;
+    width: 15.5rem;
+    height: 7.3rem;
+    padding: 10px;
+    border-radius: 0 0 4px 4px;
+}
+.video-card {
+    pointer-events: none;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+}
+
+.popular {
+    position: relative;
+}
+.popular-videos{
+    transition: 0.4s ease-in-out;
+}
+
+.showcase-picture img:hover {
+    border-radius: 3px 3px 0 0;
+}
+.pagination {
+    position: absolute;
+    right: 2.2rem;
+}
+.lead {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+.video-details p, .video-genre {
+    font-size: 11px;
+    color: white;
+}
+
+.video-genre {
+    margin-top: -0.4rem;
+}
+.video-name{
+    font-size: 20px;
+    color: silver;
+    font-family: 'Square Peg', cursive;
+}
+
+.video-match {
+    color: green !important;
+    font-weight: 600;
+}
+
+.video-rating {
+    color: white;
+    border: 1px solid mintcream;
+    font-size: 8px !important;
+    padding: 2px;
+}
+
+.video-seasons {
+    color: whitesmoke;
+}
+
+.video-quality {
+    color: white;
+    font-size: 7px !important;
+    border: 1px solid white;
+    padding: 1px;
+}
+
+.left-arrow {
+    position: absolute;
+    top: 1.9rem;
+    left: 0;
+    padding: 41px 6px;
+    cursor: pointer;
+    background-color: #202124;
+    opacity: 0.7;
+}
+
+.right-arrow {
+    position: absolute;
+    top: 1.9rem;
+    right: 0;
+    padding: 41px 8px;
+    cursor: pointer;
+    background-color: #202124;
+    opacity: 0.7;
+}
+
+/* Media Queries */
+
+@media only screen and (min-width: 1900px) {
+
+    .showcase-picture {
+        width: 18.6rem;
+        height: 10.5rem;
+    }
+
+    .showcase-picture img {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+    }
+    .showcase-video-details {
+        width: 18.6rem;
+        height: 8rem;
+    }
+    .box:nth-child(6n):hover {
+        margin-left: -6.5rem;
+        margin-right: 6.5rem;
+    }
+
+    .box:nth-child(6n + 1):hover {
+        margin-left: 6.5rem;
+        margin-right: -6.5rem;
+        border-radius: 3px;
+    }
+
+    .left-arrow {
+        top: 2.4rem;
+        padding: 61px 9px;
+    }
+
+    .right-arrow {
+        top: 2.4rem;
+        padding: 61px 9px;
+    }
+    .lead {
+        font-size: 1.7rem;
+    }
+    .videoActions h1 {
+        font-size: 10rem;
+        margin-bottom: 2rem;
+    }
+    .videoActions p {
+        font-size: 1.3rem;
+        width: 35rem;
+        height: 7rem;
+    }
+}
+
+@media only screen and (max-width: 1366px) {
+    .box:nth-child(5n):hover {
+        margin-left: -5.4rem;
+        margin-right: 5.4rem;
+    }
+
+    .box:nth-child(5n + 1):hover {
+        margin-left: 5.4rem;
+        margin-right: -5.4rem;
+        border-radius: 3px;
+    }
+}
+
+
+@media only screen and (max-width: 1024px){
+
+    .showcase-picture {
+        width: 18.6rem;
+        height: 10.5rem;
+    }
+
+    .showcase-picture img {
+        width: 100%;
+        height: 100%;
+        border-radius: 4px;
+    }
+    .showcase-video-details {
+        width: 18.6rem;
+        height: 8rem;
+    }
+
+    .collection {
+        margin-top: 5rem;
+    }
+
+   .popular-videos {
+       scroll-snap-type: x mandatory;
+       overflow: auto;
+   }
+    .left-arrow{
+        display: none;
+    }
+    .right-arrow {
+        display: none;
+    }
+    .box {
+        pointer-events: none;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+
+    .collection {
+        margin-top: -3rem;
+    }
+    .homepage-image {
+        height: 25rem;
+    }
+    .video-player {
+        height: 25rem;
+    }
+    .videoActions {
+        top: 6rem;
+    }
+    .videoActions h1 {
+        font-size: 3rem !important;
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .navbar {
+        top: 0;
+    }
+    .mobile_wallpaper {
+        display: unset;
+    }
+
+    .showcase-picture {
+        width: 6.2rem;
+        height: 8rem;
+    }
+
+    .mobile_wallpaper img {
+        position: absolute;
+        width: 100%;
+        top: 0;
+        mask-image: linear-gradient(
+                var(--mask-direction, to bottom),
+                hsl(0 0% 0% / 1),
+                hsl(0 0% 0% / 1) 20%,
+                hsl(0 0% 0% / 1) 40%,
+                hsl(0 0% 0% / 0)
+        );
+    }
+    .mobile_wallpaper p {
+        font-size: 2.7rem;
+        font-family: 'Square Peg', cursive;
+        color: white;
+        text-align: center;
+        font-weight: 700;
+    }
+    .mobile_wallpaper h4 {
+        font-size: 1rem;
+        padding: 0 12px;
+        color: white;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .popular {
+        padding: 15px !important;
+    }
+
+    .popular-videos {
+        scroll-snap-type: x mandatory;
+        overflow: auto;
+    }
+    .left-arrow{
+        display: none;
+    }
+    .right-arrow {
+        display: none;
+    }
+    .box {
+        pointer-events: none;
+    }
+
+    .homepage-image {
+        position: absolute;
+    }
+    .video-player {
+        display: none;
+    }
+
+    .collection {
+        margin-top: 25rem;
+        gap: 0;
+    }
 }
