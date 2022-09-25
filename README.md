@@ -1,3 +1,9 @@
+![netflix1](https://user-images.githubusercontent.com/36699278/192145625-38ddc3c0-7d15-4382-94b5-07a0f5cda1a0.png)
+![netflix2](https://user-images.githubusercontent.com/36699278/192145635-748b9aa2-0246-4880-b53c-6bb3cb1c1251.png)
+![netflix3](https://user-images.githubusercontent.com/36699278/192145643-2f7b9e96-e321-4fb9-87bb-9e36fb7c2421.png)
+![netflix4](https://user-images.githubusercontent.com/36699278/192145647-1bde0fce-27c1-48d5-85bf-275ea95ae523.png)
+![netflix5](https://user-images.githubusercontent.com/36699278/192145648-59adbb03-cb10-4494-a507-184e503524a8.png)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
