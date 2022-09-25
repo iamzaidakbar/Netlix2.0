@@ -37,15 +37,15 @@ export default function Popular() {
 			<div id="row-1" className="popular-videos d-flex gap">
 				{popularVideos && popularVideos.map((data) => {
 					let getPopularity = data.popularity.toString().slice(0, 2);
-					return <Card key={data.id}
-					             keyId={data.id}
+					return <Card key={data?.id}
+					             keyId={data?.id}
 					             genreId1={genre[data.genre_ids[0]]}
 					             genreId2={genre[data.genre_ids[1]]}
 					             genreId3={genre[data.genre_ids[2]]}
 					             pictureUrl={MobileDevice() ? data.poster_path : data.backdrop_path}
 					             vote_average={data.vote_average}
 					             popularity={getPopularity}
-					             name={data.name}
+					             name={data?.name || data?.original_title || data?.original_name}
 					/>
 				})}
 			</div>

@@ -44,7 +44,7 @@ export default function GetItOnTheAction() {
 					             pictureUrl={MobileDevice() ? data.poster_path : data.backdrop_path}
 					             vote_average={data.vote_average}
 					             popularity={getPopularity}
-					             name={data.name}
+					             name={data?.name || data?.original_title || data?.original_name}
 					/>
 				})}
 			</div>

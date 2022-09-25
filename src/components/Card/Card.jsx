@@ -1,44 +1,39 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPause, faPlay, faPlus} from "@fortawesome/free-solid-svg-icons";
+import {faPause, faPlay, faPlus, faVolumeMute, faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import img from "../../images/breaking bad.jpg";
-import {useContext, useState} from "react";
+import React, {useContext, useState} from "react";
 import ReactPlayer from "react-player";
 import apiContext from "../../context/apiContext";
 
 export default function Card(props) {
 
 	const {
-		setVolume,
-		LargeDevice,
-		Videos,
-		fetchVideos,
+		setVolume, LargeDevice, Videos, fetchVideos, getDeviceType
 	} = useContext(apiContext)
 
 	const [playVideo, setPlayVideo] = useState(false);
 	const [playing, setPlaying] = useState(false);
 	const [opacity, setOpacity] = useState(1);
 	const [index, setIndex] = useState(0);
-
-
+	const [trailerVolume, setTrailerVolume] = useState(true);
 
 
 	//Play / Pause Card Video
 	function playCardVideo() {
-		if (playVideo) {
-			setOpacity(1)
-			setVolume(true)
-			setPlayVideo(false)
-		} else {
-			setOpacity(0)
-			setVolume(false)
-			setPlayVideo(true)
+		fetchVideos(props.keyId)
+		if (!Videos?.success === false) {
+			setIndex(0)
 		}
+		setPlaying(true)
+		setVolume(false)
+		setPlayVideo(true)
 	}
 
 	function pauseCardVideo() {
 		setOpacity(1)
 		setIndex(0)
 		setPlayVideo(false)
+		setVolume(true)
 	}
 
 	function handleVideoEnd() {
@@ -47,9 +42,7 @@ export default function Card(props) {
 	}
 
 	function setIndexValue() {
-		fetchVideos(props.keyId)
 		setIndex(1)
-		setPlayVideo(true)
 	}
 
 	function handleOnReady() {
@@ -57,27 +50,54 @@ export default function Card(props) {
 	}
 
 
+	function HandleTrailerVolume() {
+		if (trailerVolume) {
+			setTrailerVolume(false)
+		} else {
+			setTrailerVolume(true)
+		}
+	}
+
+	function handlePlayPauseClick() {
+		if (playVideo) {
+			setPlayVideo(false)
+			setOpacity(1)
+		} else {
+			setPlayVideo(true)
+			setOpacity(0)
+		}
+	}
+
 	return (<>
 
-		<div style={{zIndex:index ? index : 0}} onMouseOver={setIndexValue} onMouseLeave={pauseCardVideo} id={"box"} className="box">
+		<div style={{zIndex: index ? index : 0}} onMouseOver={setIndexValue} onMouseLeave={pauseCardVideo} id={"box"}
+		     className="box">
 			<div className="showcase-picture">
-				<img style={{opacity: opacity, transition: "1s ease-in-out"}} src={props.pictureUrl} alt="..."/>
-				{playVideo && <div className={"video-card"}>
-					<ReactPlayer style={{ marginTop: LargeDevice() ? "0" : "-1.5rem"}} url={"https://youtu.be/" + Videos[0].key}
+				<img onMouseOver={playCardVideo} style={{opacity: opacity, transition: "1s ease-in-out"}}
+				     src={props.pictureUrl} alt="..."/>
+				{playVideo && getDeviceType() === "desktop" && Videos.length > 0 && <div className={"video-card"}>
+					<ReactPlayer style={{marginTop: LargeDevice() ? "0" : "-1.5rem"}}
+					             url={"https://youtu.be/" + Videos[0]?.key}
 					             width={"100%"}
 					             height={"11rem"}
 					             onReady={handleOnReady}
 					             playing={playing}
 					             onEnded={handleVideoEnd}
-					             volume={1}
+					             volume={trailerVolume ? 1 : 0}
 					/>
 				</div>}
 			</div>
 			<div className="showcase-video-details d-flex align-items-center flex-column">
 				<div className="action-buttons d-flex align-items-center gap-1 mb-2">
-					<FontAwesomeIcon onClick={playCardVideo} className="play" icon={!playVideo ? faPlay : faPause}
+					<FontAwesomeIcon onClick={handlePlayPauseClick} className="play"
+					                 icon={!playVideo ? faPlay : faPause}
 					                 color="black"/>
 					<FontAwesomeIcon className="plus" icon={faPlus} color="white"/>
+					<FontAwesomeIcon onClick={HandleTrailerVolume} size="xs"
+					                 icon={trailerVolume ? faVolumeUp : faVolumeMute} className="vol ms-auto"
+					                 color={"silver"}/>
+					{Videos?.success === false &&
+						<p className="default-video-playing">Video not available!</p>}
 				</div>
 				<span>
 					<p className="video-name ms-auto mb-1">{props.name ? props.name : "Netflix Originals"}</p>

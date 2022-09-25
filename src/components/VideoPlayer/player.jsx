@@ -13,12 +13,16 @@ export default function Player(props) {
 		volume,
 		playPauseVideo,
 		handleVolume,
+		isTablet,getDeviceType,
+
 	} = useContext(apiContext)
 
 	return (
 		<>
-			<div className="video-player">
-				{props.imgUrl && <img style={{opacity: opacity}} id="homepage-image" src={props.imgUrl} className="homepage-image" alt=""/>}
+			{getDeviceType() === "desktop" && <div className="video-player">
+				{props.imgUrl &&
+					<img style={{opacity: opacity}} id="homepage-image" src={props.imgUrl} className="homepage-image"
+					     alt=""/>}
 				<ReactPlayer
 					url={props.url}
 					width={props.width}
@@ -34,12 +38,13 @@ export default function Player(props) {
 					<div>
 						{props.videoName && <h1 id={"homeTitle"}>{props.videoName}</h1>}
 						{props.description && <p>{props.description}</p>}
-						{props.showPlayButton && <button onClick={playPauseVideo} className="play-home-button"><FontAwesomeIcon
-							className="me-3"
-							icon={playing ? faPause : faPlay}
-							size={"lg"}
-							color="black"/>{playing ? "Pause" : "Play"}
-						</button>}
+						{props.showPlayButton &&
+							<button onClick={playPauseVideo} className="play-home-button"><FontAwesomeIcon
+								className="me-3"
+								icon={playing ? faPause : faPlay}
+								size={"lg"}
+								color="black"/>{playing ? "Pause" : "Play"}
+							</button>}
 					</div>
 				</div>
 
@@ -47,6 +52,6 @@ export default function Player(props) {
 					<FontAwesomeIcon icon={volume ? faVolumeUp : faVolumeMute} className="volumeIcon"
 					                 color={"white"}/>
 				</div>
-			</div>
+			</div>}
 		</>)
 }

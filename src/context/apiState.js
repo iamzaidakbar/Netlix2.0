@@ -1,22 +1,46 @@
 import apiContext from "./apiContext";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const ApiState = (props) => {
 
+	useEffect(() => {
+		return () => {
+			isTablet()
+			getDeviceType()
+		};
+	}, []);
+
+
+	// Generate Random Number
+	const randomNumber = (number) => {
+		return Math.floor(Math.random() * number)
+	}
 
 	// Returns Window Screen Sizes
 	function LargeDevice() {
 		return window.innerWidth > 1900
 	}
 
-	function IPadDevice() {
-		return window.innerWidth <= 1024 && window.innerWidth > 450
-	}
 
 	function MobileDevice() {
-		return  window.innerWidth <= 480
+		return window.innerWidth <= 480
 	}
 
+	const getDeviceType = () => {
+		const ua = navigator.userAgent;
+		if (/(tablet|ipad|playbook|silk)|(android(?!.*mobi))/i.test(ua)) {
+			return "tablet";
+		}
+		if (/Mobile|iP(hone|od)|Android|BlackBerry|IEMobile|Kindle|Silk-Accelerated|(hpw|web)OS|Opera M(obi|ini)/.test(ua)) {
+			return "mobile";
+		}
+		return "desktop";
+	};
+
+	const isTablet = () => {
+		const userAgent = navigator.userAgent.toLowerCase();
+		return /(ipad|tablet|(android(?!.*mobile))|(windows(?!.*phone)(.*touch))|kindle|playbook|silk|(puffin(?!.*(IP|AP|WP))))/.test(userAgent);
+	};
 
 
 	//Calculations for animation
@@ -48,13 +72,19 @@ const ApiState = (props) => {
 	const [GetItOnTheAction, setGetItOnTheAction] = useState([]);
 	const [Anime, setAnimations] = useState([]);
 	const [Videos, setGetVideos] = useState([]);
+	const [Search, setSearchResults] = useState([]);
+	let [searchQuery, setSearchQuery] = useState('');
 	const [row1Right, setRow1Right] = useState(0);
 	const [row2Right, setRow2Right] = useState(0);
 	const [row3Right, setRow3Right] = useState(0);
 	const [row4Right, setRow4Right] = useState(0);
+	let [searchContentPageSize, setSearchContentPageSize] = useState(1);
 	const [playing, setPlaying] = useState(false);
 	const [volume, setVolume] = useState(false);
 	const [opacity, setOpacity] = useState(1);
+	const [color, setColor] = useState(false);
+	const [searchContent, setSearchContent] = useState(true);
+	const [urlParam, setUrlParam] = useState('');
 
 
 	// Genre
@@ -76,6 +106,14 @@ const ApiState = (props) => {
 		10768: "War & Politics",
 		37: "Western"
 	}
+
+	window.addEventListener('scroll', () => {
+		if (window.scrollY > 5) {
+			setColor(true)
+		} else {
+			setColor(false)
+		}
+	})
 
 	// Show arrows when mouse over row 1
 	function handleMouseOverRow1() {
@@ -149,9 +187,47 @@ const ApiState = (props) => {
 		setRow4Counter(row4Counter - 1)
 	}
 
+
+	function focusIn() {
+		document.getElementById('search-icon').style.zIndex = '2'
+	}
+
+	function focusOut() {
+		document.getElementById('search-icon').style.zIndex = '-1'
+	}
+
+	function debounce(func, wait, immediate) {
+		let timeout;
+
+		return function executedFunction() {
+			const context = this;
+			const args = arguments;
+
+			const later = function () {
+				timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+
+			const callNow = immediate && !timeout;
+
+			clearTimeout(timeout);
+
+			timeout = setTimeout(later, wait);
+
+			if (callNow) func.apply(context, args);
+		};
+	}
+
+	const processChange = debounce(function () {
+		if(searchQuery){
+			searchApiCall(searchQuery, 1).then(r => r)
+		}
+	}, 1500);
+
+
 	// Resize Video details on End
 	function handleEnd() {
-		timeOut(2000, '10rem')
+		timeOut(2000, '7rem')
 		setOpacity(1)
 		setPlaying(false)
 	}
@@ -205,9 +281,9 @@ const ApiState = (props) => {
 
 	// Resize Description
 	if (playing) {
-		timeOut(1000, "6rem")
+		timeOut(1000, "5rem")
 	} else {
-		timeOut(1500, "10rem")
+		timeOut(1500, "7rem")
 	}
 
 	//Play / Pause Card Video
@@ -302,23 +378,8 @@ const ApiState = (props) => {
 			});
 	}
 
-
-	// Videos
-	const fetchVideos = async (key) => {
-		await fetch('https://api.themoviedb.org/3/tv/' + key + '/videos?api_key=890b1191453c654b1dceeaba2f52c3a4')
-			.then((response) => response.json())
-			.then((data) => {
-				if(data.results === undefined){
-					data.results = [
-						{key : "ZFnuI3rZPaA"}
-					]
-				}
-				setGetVideos(data.results)
-			});
-	}
-
 	//Animation
-	const fetchAnime = async (key) => {
+	const fetchAnime = async () => {
 		await fetch('https://api.themoviedb.org/3/discover/movie?api_key=890b1191453c654b1dceeaba2f52c3a4&with_genres=16')
 			.then((response) => response.json())
 			.then((data) => {
@@ -330,6 +391,37 @@ const ApiState = (props) => {
 			});
 	}
 
+
+	// Videos
+	const fetchVideos = async (key) => {
+		await fetch('https://api.themoviedb.org/3/tv/' + key + '/videos?api_key=890b1191453c654b1dceeaba2f52c3a4')
+			.then((response) => response.json())
+			.then((data) => {
+				if (data.results === undefined) {
+					data.results = {
+						success: false,
+					}
+				}
+				setGetVideos(data.results)
+			});
+	}
+
+	// Search Api
+	const searchApiCall = async (query, page) => {
+		await fetch('https://api.themoviedb.org/3/search/multi?api_key=890b1191453c654b1dceeaba2f52c3a4&language=en-US&query=' + query + '&page=' + page + '&&include_adult=false')
+			.then((response) => response.json())
+			.then((data) => {
+				for (const e of data.results) {
+					if (e.backdrop_path === null || e.backdrop_path === undefined) {
+						e.backdrop_path = "https://www.gamereactor.eu/media/98/_3719893.jpg"
+					} else {
+						e.backdrop_path = "https://image.tmdb.org/t/p/w500" + e.backdrop_path
+						e.poster_path = "https://image.tmdb.org/t/p/w500" + e.poster_path
+					}
+				}
+				setSearchResults(data.results)
+			});
+	}
 
 	return (<apiContext.Provider
 		value={{
@@ -344,6 +436,7 @@ const ApiState = (props) => {
 			handleRightArrowClickRow2,
 			handleRow3PositiveCounter,
 			handleRightArrowClickRow3,
+			setSearchContentPageSize,
 			handleLeftArrowClickRow3,
 			handleLeftArrowClickRow1,
 			handleLeftArrowClickRow2,
@@ -362,17 +455,27 @@ const ApiState = (props) => {
 			setShowArrowsRow3,
 			setShowArrowsRow4,
 			GetItOnTheAction,
+			setSearchContent,
 			fetchTrendingNow,
+			setSearchResults,
 			showArrowsRow1,
 			showArrowsRow2,
 			showArrowsRow3,
 			showArrowsRow4,
+			setSearchQuery,
 			playPauseVideo,
 			popularVideos,
 			setRow4Counter,
+			searchApiCall,
+			processChange,
+			getDeviceType,
+			searchContent,
 			MobileDevice,
 			fetchPopular,
+			randomNumber,
 			handleVolume,
+			setUrlParam,
+			urlParam,
 			fetchAnime,
 			LargeDevice,
 			fetchVideos,
@@ -380,24 +483,29 @@ const ApiState = (props) => {
 			row2Counter,
 			row3Counter,
 			row4Counter,
+			searchQuery,
 			trendingNow,
 			oneBoxWidth,
 			setPlaying,
-			IPadDevice,
 			totalBoxes,
-			setVolume,
 			row1Right,
 			handleEnd,
 			playVideo,
+			setVolume,
 			totalGaps,
 			setTotal,
 			pageSize,
+			isTablet,
+			focusOut,
+			focusIn,
 			playing,
 			opacity,
 			Videos,
+			Search,
 			volume,
 			Anime,
 			genre,
+			color,
 			gap,
 		}}>
 		{props.children}
