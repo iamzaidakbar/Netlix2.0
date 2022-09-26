@@ -1,7 +1,7 @@
 import Navbar from "../Navbar/navbar";
 import Player from "../VideoPlayer/player";
 import video from "../../SayMyName.mp4";
-import img from "../../images/breaking bad.jpg";
+import img from "../../images/breaking-bad.jpg";
 import Mobile from "../Mobile/Mobile";
 import Popular from "../Popular/popular";
 import Anime from "../Anime/Anime";

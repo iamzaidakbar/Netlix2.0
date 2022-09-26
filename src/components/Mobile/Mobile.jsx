@@ -1,4 +1,4 @@
-import img from "../../images/breaking bad.jpg";
+import img from "../../images/breaking-bad.jpg";
 import React, {useContext, useEffect, useState} from "react";
 import apiContext from "../../context/apiContext";
 

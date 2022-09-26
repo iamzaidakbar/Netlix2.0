@@ -1,6 +1,6 @@
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPause, faPlay, faPlus, faVolumeMute, faVolumeUp} from "@fortawesome/free-solid-svg-icons";
-import img from "../../images/breaking bad.jpg";
+import img from "../../images/breaking-bad.jpg";
 import React, {useContext, useState} from "react";
 import ReactPlayer from "react-player";
 import apiContext from "../../context/apiContext";
