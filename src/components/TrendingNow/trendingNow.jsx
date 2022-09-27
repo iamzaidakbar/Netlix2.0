@@ -34,7 +34,7 @@ export default function TrendingNow() {
 			<div className="d-flex justify-content-between">
 				<h2 className="text-white lead">Trending Now</h2>
 			</div>
-			<div id="row-2" className="popular-videos d-flex gap">
+			<div id="row-2" className="video-menu d-flex gap">
 				{trendingNow && trendingNow.map((data) => {
 					let getPopularity = data.popularity.toString().slice(0, 2);
 					return <Card key={data?.id}

@@ -40,21 +40,21 @@ export default function Navbar() {
 	}
 
 	function getAvatar() {
-		if(urlParam === 'zaidakbar'){
+		if (urlParam === 'zaidakbar') {
 			return avatar_zaid
-		} else if(urlParam === 'ubaidmanzoor'){
+		} else if (urlParam === 'ubaidmanzoor') {
 			return avatar_ubaid
-		} else if(urlParam === 'guest'){
+		} else if (urlParam === 'guest') {
 			return avatar_zaid
 		}
 	}
 
 	function getDisplayName() {
-		if(urlParam === 'zaidakbar'){
+		if (urlParam === 'zaidakbar') {
 			return "ZA"
-		} else if(urlParam === 'ubaidmanzoor'){
-			return 'UM'
-		} else if(urlParam === 'guest'){
+		} else if (urlParam === 'ubaidmanzoor') {
+			return 'UB'
+		} else if (urlParam === 'guest') {
 			return "GU"
 		}
 	}
@@ -95,9 +95,10 @@ export default function Navbar() {
 
 
 		{/*	Search Wrapper*/}
-		{!searchContent && <span className="search-body-wrapper d-flex flex-wrap mb-5">
+		{!searchContent && <span id="search-body" className="search-body-wrapper d-flex flex-wrap mb-5">
 				{Search && Search.map(data => {
-					return <SearchContent key={data.id} img_url={data.backdrop_path}/>
+					return <SearchContent key={data.id} media_type={data.media_type === 'movie' ? "Movie " : "TV"} first_air_date={data.first_air_date} overview={data.overview}
+					                      media_name={data.original_title || data.original_name || data.name} img_url={data.backdrop_path}/>
 				})}
 			</span>}
 	</>)

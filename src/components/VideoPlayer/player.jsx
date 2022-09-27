@@ -13,7 +13,7 @@ export default function Player(props) {
 		volume,
 		playPauseVideo,
 		handleVolume,
-		isTablet,getDeviceType,
+		getDeviceType,
 
 	} = useContext(apiContext)
 

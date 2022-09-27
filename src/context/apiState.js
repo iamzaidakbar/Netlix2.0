@@ -5,6 +5,11 @@ const ApiState = (props) => {
 
 	useEffect(() => {
 		return () => {
+			setTimeout(()=>{
+				setPlaying(true)
+				setVolume(true)
+				setOpacity(0)
+			},2000)
 			isTablet()
 			getDeviceType()
 		};
@@ -78,7 +83,6 @@ const ApiState = (props) => {
 	const [row2Right, setRow2Right] = useState(0);
 	const [row3Right, setRow3Right] = useState(0);
 	const [row4Right, setRow4Right] = useState(0);
-	let [searchContentPageSize, setSearchContentPageSize] = useState(1);
 	const [playing, setPlaying] = useState(false);
 	const [volume, setVolume] = useState(false);
 	const [opacity, setOpacity] = useState(1);
@@ -259,10 +263,6 @@ const ApiState = (props) => {
 			setVolume(false)
 			setPlaying(false)
 			setOpacity(1)
-		} else {
-			setVolume(true)
-			setPlaying(true)
-			setOpacity(0)
 		}
 	})
 
@@ -272,10 +272,6 @@ const ApiState = (props) => {
 			setVolume(false)
 			setPlaying(false)
 			setOpacity(1)
-		} else {
-			setVolume(true)
-			setPlaying(true)
-			setOpacity(0)
 		}
 	});
 
@@ -436,7 +432,6 @@ const ApiState = (props) => {
 			handleRightArrowClickRow2,
 			handleRow3PositiveCounter,
 			handleRightArrowClickRow3,
-			setSearchContentPageSize,
 			handleLeftArrowClickRow3,
 			handleLeftArrowClickRow1,
 			handleLeftArrowClickRow2,

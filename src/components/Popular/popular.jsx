@@ -34,7 +34,7 @@ export default function Popular() {
 			<div className="d-flex justify-content-between">
 				<h2 className="text-white lead">Popular On Netflix</h2>
 			</div>
-			<div id="row-1" className="popular-videos d-flex gap">
+			<div id="row-1" className="video-menu d-flex gap">
 				{popularVideos && popularVideos.map((data) => {
 					let getPopularity = data.popularity.toString().slice(0, 2);
 					return <Card key={data?.id}

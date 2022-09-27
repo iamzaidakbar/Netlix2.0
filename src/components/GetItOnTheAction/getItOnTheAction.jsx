@@ -34,7 +34,7 @@ export default function GetItOnTheAction() {
 			<div className="d-flex justify-content-between">
 				<h2 className="text-white lead">Get It On The Action </h2>
 			</div>
-			<div id="row-3" className="popular-videos d-flex gap">
+			<div id="row-3" className="video-menu d-flex gap">
 				{GetItOnTheAction && GetItOnTheAction.map((data) => {
 					let getPopularity = data.popularity.toString().slice(0, 2);
 					return <Card key={data.id}

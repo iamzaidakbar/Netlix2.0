@@ -34,7 +34,7 @@ export default function Anime() {
 			<div className="d-flex justify-content-between">
 				<h2 className="text-white lead">Anime</h2>
 			</div>
-			<div id="row-4" className="popular-videos d-flex gap">
+			<div id="row-4" className="video-menu d-flex gap">
 				{Anime && Anime.map((data) => {
 					let getPopularity = data.popularity.toString().slice(0, 2);
 					return <Card key={data.id}
