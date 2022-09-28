@@ -8,18 +8,9 @@ export default function ChooseAvatar() {
 
 
 	const {
-		setUrlParam,
+		setUrlParam, setUrl
 	} = useContext(apiContext)
 
-	function setUrl(id) {
-		if(id === 1) {
-			setUrlParam('zaidakbar')
-		} else if(id === 2) {
-			setUrlParam('ubaidmanzoor')
-		} else {
-			setUrlParam('guest')
-		}
-	}
 
 	return (
 		<>

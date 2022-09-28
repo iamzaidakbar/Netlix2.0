@@ -111,6 +111,17 @@ const ApiState = (props) => {
 		37: "Western"
 	}
 
+	function setUrl(id) {
+		document.title = 'Home - Netflix'
+		if(id === 1) {
+			setUrlParam('zaidakbar')
+		} else if(id === 2) {
+			setUrlParam('ubaidmanzoor')
+		} else {
+			setUrlParam('guest')
+		}
+	}
+
 	window.addEventListener('scroll', () => {
 		if (window.scrollY > 5) {
 			setColor(true)
@@ -496,6 +507,7 @@ const ApiState = (props) => {
 			playing,
 			opacity,
 			Videos,
+			setUrl,
 			Search,
 			volume,
 			Anime,
