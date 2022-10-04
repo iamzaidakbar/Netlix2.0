@@ -112,7 +112,6 @@ const ApiState = (props) => {
 	}
 
 	function setUrl(id) {
-		document.title = 'Home - Netflix'
 		if(id === 1) {
 			setUrlParam('zaidakbar')
 		} else if(id === 2) {
